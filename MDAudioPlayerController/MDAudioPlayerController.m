@@ -7,7 +7,6 @@
 //
 
 #import "MDAudioPlayerController.h"
-#import "MDAudioFile.h"
 #import "MDAudioPlayerTableViewCell.h"
 
 @interface MDAudioPlayerController ()
@@ -336,6 +335,11 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 {
 	[super viewDidAppear:animated];
 	[player play];
+    
+    if([_delegate respondsToSelector:@selector(audioPlayer:didBeginPlaying:)]) {
+        MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+        [_delegate audioPlayer:self didBeginPlaying:curr];
+    }
 	
 	[self updateViewForPlayerInfo:player];
 	[self updateViewForPlayerState:player];
@@ -345,6 +349,10 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 {
 	[player stop];
 	[self.parentViewController dismissModalViewControllerAnimated:YES];
+    
+    if([_delegate respondsToSelector:@selector(audioPlayerDidClose:)]) {
+        [_delegate audioPlayerDidClose:self];
+    }
 }
 
 - (void)showSongFiles
@@ -537,7 +545,10 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	{
 		if ([self.player play]) 
 		{
-			
+			if([_delegate respondsToSelector:@selector(audioPlayer:didBeginPlaying:)]) {
+                MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+                [_delegate audioPlayer:self didBeginPlaying:curr];
+            }
 		}
 		else
 		{
@@ -562,6 +573,11 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 		NSLog(@"%@", error);
 	
 	[player stop];
+    if([_delegate respondsToSelector:@selector(audioPlayer:didStopPlaying:)]) {
+        MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+        [_delegate audioPlayer:self didStopPlaying:curr];
+    }
+    
 	self.player = newAudioPlayer;
 	[newAudioPlayer release];
 	
@@ -570,6 +586,11 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	[player prepareToPlay];
 	[player setNumberOfLoops:0];
 	[player play];
+    
+    if([_delegate respondsToSelector:@selector(audioPlayer:didBeginPlaying:)]) {
+        MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+        [_delegate audioPlayer:self didBeginPlaying:curr];
+    }
 	
 	[self updateViewForPlayerInfo:player];
 	[self updateViewForPlayerState:player];	
@@ -608,6 +629,11 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 		NSLog(@"%@", error);
 	
 	[player stop];
+    if([_delegate respondsToSelector:@selector(audioPlayer:didStopPlaying:)]) {
+        MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+        [_delegate audioPlayer:self didStopPlaying:curr];
+    }
+    
 	self.player = newAudioPlayer;
 	[newAudioPlayer release];
 	
@@ -616,6 +642,10 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	[player prepareToPlay];
 	[player setNumberOfLoops:0];
 	[player play];
+    if([_delegate respondsToSelector:@selector(audioPlayer:didBeginPlaying:)]) {
+        MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+        [_delegate audioPlayer:self didBeginPlaying:curr];
+    }
 	
 	[self updateViewForPlayerInfo:player];
 	[self updateViewForPlayerState:player];
@@ -643,12 +673,17 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	if (flag == NO)
 		NSLog(@"Playback finished unsuccessfully");
 	
-	if ([self canGoToNextTrack])
+	if ([self canGoToNextTrack]) {
 		 [self next];
-	else if (interrupted)
+    } else if (interrupted) {
 		[self.player play];
-	else
+        if([_delegate respondsToSelector:@selector(audioPlayer:didBeginPlaying:)]) {
+            MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+            [_delegate audioPlayer:self didBeginPlaying:curr];
+        }
+    } else {
 		[self.player stop];
+    }
 		 
 	[self updateViewForPlayerInfo:player];
 	[self updateViewForPlayerState:player];
@@ -679,6 +714,11 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	// resume playback at the end of the interruption
 	printf("(apei) Interruption ended\n");
 	[self.player play];
+    
+    if([_delegate respondsToSelector:@selector(audioPlayer:didBeginPlaying:)]) {
+        MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+        [_delegate audioPlayer:self didBeginPlaying:curr];
+    }
 	
 	// remove the interruption key. it won't be needed
 	[[NSUserDefaults standardUserDefaults] removeObjectForKey:@"Interruption"];
@@ -752,6 +792,11 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 		NSLog(@"%@", error);
 	
 	[player stop];
+    if([_delegate respondsToSelector:@selector(audioPlayer:didStopPlaying:)]) {
+        MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+        [_delegate audioPlayer:self didStopPlaying:curr];
+    }
+    
 	self.player = newAudioPlayer;
 	[newAudioPlayer release];
 	
@@ -760,6 +805,10 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	[player prepareToPlay];
 	[player setNumberOfLoops:0];
 	[player play];
+    if([_delegate respondsToSelector:@selector(audioPlayer:didBeginPlaying:)]) {
+        MDAudioFile* curr = (MDAudioFile *)[soundFiles objectAtIndex:selectedIndex];
+        [_delegate audioPlayer:self didBeginPlaying:curr];
+    }
 	
 	[self updateViewForPlayerInfo:player];
 	[self updateViewForPlayerState:player];

@@ -9,6 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <AVFoundation/AVFoundation.h>
 #import <QuartzCore/QuartzCore.h>
+#import "MDAudioFile.h"
+
+@protocol MDAudioPlayerControllerDelegate;
 
 @interface MDAudioPlayerController : UIViewController <AVAudioPlayerDelegate, UITableViewDelegate, UITableViewDataSource>
 {
@@ -51,6 +54,7 @@
 	BOOL				shuffle;
 }
 
+@property (nonatomic,assign) id <MDAudioPlayerControllerDelegate> delegate;
 @property (nonatomic, retain) NSMutableArray *soundFiles;
 @property (nonatomic, copy) NSString *soundFilesPath;
 
@@ -109,3 +113,15 @@
 
 @end
 
+
+@protocol MDAudioPlayerControllerDelegate <NSObject>
+@required
+@optional
+- (void) audioPlayer:(MDAudioPlayerController*)player
+     didBeginPlaying:(MDAudioFile*)audio;
+
+- (void) audioPlayer:(MDAudioPlayerController*)player
+      didStopPlaying:(MDAudioFile*)audio;
+
+- (void) audioPlayerDidClose:(MDAudioPlayerController*)player;
+@end
