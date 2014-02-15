@@ -24,9 +24,15 @@
 	fileArray = [[NSMutableArray alloc] initWithObjects:[[NSBundle mainBundle] pathForResource:@"1" ofType:@"mp3"],
 				 [[NSBundle mainBundle] pathForResource:@"2" ofType:@"mp3"],
 				 [[NSBundle mainBundle] pathForResource:@"3" ofType:@"mp3"], nil];
+    fileArray = [fileArray arrayByAddingObjectsFromArray:fileArray];
 	
     // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
     // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleBlackTranslucent;
 }
 
 - (void)viewWillAppear:(BOOL)animated {

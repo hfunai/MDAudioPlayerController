@@ -11,6 +11,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "MDAudioFile.h"
 
+#define FOUR_INCH_SCREEN  ([[UIScreen mainScreen] bounds].size.height == 568)
+#define IS_OS_7_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+
 @protocol MDAudioPlayerControllerDelegate;
 
 @interface MDAudioPlayerController : UIViewController <AVAudioPlayerDelegate, UITableViewDelegate, UITableViewDataSource>

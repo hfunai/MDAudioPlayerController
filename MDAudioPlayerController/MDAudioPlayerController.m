@@ -10,6 +10,10 @@
 #import "MDAudioPlayerTableViewCell.h"
 
 @interface MDAudioPlayerController ()
+{
+    CGFloat statusBarOffset;
+}
+
 - (UIImage *)reflectedImage:(UIButton *)fromImage withHeight:(NSUInteger)height;
 @end
 
@@ -132,6 +136,8 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 {
 	if (self = [super init]) 
 	{
+        statusBarOffset = 0;
+        
 		self.soundFiles = songs;
 		self.soundFilesPath = path;
 		selectedIndex = index;
@@ -152,17 +158,25 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	return self;
 }
 
+- (UIStatusBarStyle)preferredStatusBarStyle
+{
+    return UIStatusBarStyleLightContent;
+}
+
 - (void)viewDidLoad
 {
 	[super viewDidLoad];
+    
+    if (IS_OS_7_OR_LATER) statusBarOffset = 20;
 	
 	self.view.backgroundColor = [UIColor blackColor];
 	
-	[[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+	if (!IS_OS_7_OR_LATER) [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
+    else [self setNeedsStatusBarAppearanceUpdate];
 	
 	updateTimer = nil;
 	
-	UINavigationBar *navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 44)];
+	UINavigationBar *navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, statusBarOffset, self.view.frame.size.width, 44)];
 	navigationBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
 	navigationBar.barStyle = UIBarStyleBlackOpaque;
 	[self.view addSubview:navigationBar];
@@ -173,7 +187,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone target:self action:@selector(dismissAudioPlayer)];
 	
 	self.toggleButton = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 30, 30)];
-	[toggleButton setImage:[UIImage imageNamed:@"AudioPlayerAlbumInfo.png"] forState:UIControlStateNormal];
+	[toggleButton setImage:[UIImage imageNamed:@"AudioPlayerAlbumInfo"] forState:UIControlStateNormal];
 	[toggleButton addTarget:self action:@selector(showSongFiles) forControlEvents:UIControlEventTouchUpInside];
 	
 	UIBarButtonItem *songsListBarButton = [[UIBarButtonItem alloc] initWithCustomView:toggleButton];
@@ -189,7 +203,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	
 	MDAudioFile *selectedSong = [self.soundFiles objectAtIndex:selectedIndex];
 	
-	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 14, 195, 12)];
+	self.titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 14 + statusBarOffset, 195, 12)];
 	titleLabel.text = [selectedSong title];
 	titleLabel.font = [UIFont boldSystemFontOfSize:12];
 	titleLabel.backgroundColor = [UIColor clearColor];
@@ -200,7 +214,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 	[self.view addSubview:titleLabel];
 	
-	self.artistLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 2, 195, 12)];
+	self.artistLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 2 + statusBarOffset, 195, 12)];
 	artistLabel.text = [selectedSong artist];
 	artistLabel.font = [UIFont boldSystemFontOfSize:12];
 	artistLabel.backgroundColor = [UIColor clearColor];
@@ -211,7 +225,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	artistLabel.lineBreakMode = NSLineBreakByTruncatingTail;
 	[self.view addSubview:artistLabel];
 	
-	self.albumLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 27, 195, 12)];
+	self.albumLabel = [[UILabel alloc] initWithFrame:CGRectMake(60, 27 + statusBarOffset, 195, 12)];
 	albumLabel.text = [selectedSong album];
 	albumLabel.backgroundColor = [UIColor clearColor];
 	albumLabel.font = [UIFont boldSystemFontOfSize:12];
@@ -226,7 +240,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	currentTime.adjustsFontSizeToFitWidth = YES;
 	progressSlider.minimumValue = 0.0;	
 	
-	self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 44, self.view.bounds.size.width, self.view.bounds.size.height - 44)];
+	self.containerView = [[UIView alloc] initWithFrame:CGRectMake(0, 44 + statusBarOffset, self.view.bounds.size.width, self.view.bounds.size.height - 44)];
 	[self.view addSubview:containerView];
 	
 	self.artworkView = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 320, 320)];
@@ -242,7 +256,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	reflectionView.alpha = kDefaultReflectionFraction;
 	[self.containerView addSubview:reflectionView];
 	
-	self.songTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 368)];
+	self.songTableView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, self.view.bounds.size.width, 368 + (FOUR_INCH_SCREEN?88:0))];
 	self.songTableView.delegate = self;
 	self.songTableView.dataSource = self;
 	self.songTableView.separatorColor = [UIColor colorWithRed:0.986 green:0.933 blue:0.994 alpha:0.10];
@@ -261,22 +275,22 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	v.backgroundColor = [UIColor clearColor];
 	[self.songTableView setTableFooterView:v];
 
-	UIImageView *buttonBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, 44 + 320, self.view.bounds.size.width, 96)];
+	UIImageView *buttonBackground = [[UIImageView alloc] initWithFrame:CGRectMake(0, self.view.bounds.size.height - 96, self.view.bounds.size.width, 96)];
 	buttonBackground.image = [[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerBarBackground" ofType:@"png"]] stretchableImageWithLeftCapWidth:0 topCapHeight:0];
 	[self.view addSubview:buttonBackground];
 		
-	self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(144, 370, 40, 40)];
+	self.playButton = [[UIButton alloc] initWithFrame:CGRectMake(144, self.view.bounds.size.height - 90, 40, 40)];
 	[playButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerPlay" ofType:@"png"]] forState:UIControlStateNormal];
 	[playButton addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
 	playButton.showsTouchWhenHighlighted = YES;
 	[self.view addSubview:playButton];
 							  
-	self.pauseButton = [[UIButton alloc] initWithFrame:CGRectMake(140, 370, 40, 40)];
+	self.pauseButton = [[UIButton alloc] initWithFrame:CGRectMake(140, self.view.bounds.size.height - 90, 40, 40)];
 	[pauseButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerPause" ofType:@"png"]] forState:UIControlStateNormal];
 	[pauseButton addTarget:self action:@selector(play) forControlEvents:UIControlEventTouchUpInside];
 	pauseButton.showsTouchWhenHighlighted = YES;
 	
-	self.nextButton = [[UIButton alloc] initWithFrame:CGRectMake(220, 370, 40, 40)];
+	self.nextButton = [[UIButton alloc] initWithFrame:CGRectMake(220, self.view.bounds.size.height - 90, 40, 40)];
 	[nextButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerNextTrack" ofType:@"png"]] 
 				forState:UIControlStateNormal];
 	[nextButton addTarget:self action:@selector(next) forControlEvents:UIControlEventTouchUpInside];
@@ -284,7 +298,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	nextButton.enabled = [self canGoToNextTrack];
 	[self.view addSubview:nextButton];
 	
-	self.previousButton = [[UIButton alloc] initWithFrame:CGRectMake(60, 370, 40, 40)];
+	self.previousButton = [[UIButton alloc] initWithFrame:CGRectMake(60, self.view.bounds.size.height - 90, 40, 40)];
 	[previousButton setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerPrevTrack" ofType:@"png"]] 
 				forState:UIControlStateNormal];
 	[previousButton addTarget:self action:@selector(previous) forControlEvents:UIControlEventTouchUpInside];
@@ -292,7 +306,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	previousButton.enabled = [self canGoToPreviousTrack];
 	[self.view addSubview:previousButton];
 	
-	self.volumeSlider = [[UISlider alloc] initWithFrame:CGRectMake(25, 420, 270, 9)];
+	self.volumeSlider = [[UISlider alloc] initWithFrame:CGRectMake(25, self.view.bounds.size.height - (IS_OS_7_OR_LATER?32:47), 270, 9)];
 	[volumeSlider setThumbImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerVolumeKnob" ofType:@"png"]]
 														forState:UIControlStateNormal];
 	[volumeSlider setMinimumTrackImage:[[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerScrubberLeft" ofType:@"png"]] stretchableImageWithLeftCapWidth:5 topCapHeight:3]
@@ -377,7 +391,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	}
 	else
 	{
-		[self.artworkView setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerTableBackground" ofType:@"png"]] forState:UIControlStateNormal];
+		[self.artworkView setImage:[UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerTableBackground_" ofType:@"png"]] forState:UIControlStateNormal];
 		[self.reflectionView removeFromSuperview];
 		[self.overlayView removeFromSuperview];
 		[self.containerView addSubview:songTableView];
@@ -554,6 +568,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 
 - (void)previous
 {
+    
 	NSUInteger newIndex = selectedIndex - 1;
 	selectedIndex = newIndex;
 		
@@ -583,11 +598,14 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
     }
 	
 	[self updateViewForPlayerInfo:player];
-	[self updateViewForPlayerState:player];	
+	[self updateViewForPlayerState:player];
+    
+    [self.songTableView reloadData];
 }
 
 - (void)next
 {
+
 	NSUInteger newIndex;
 	
 	if (shuffle)
@@ -638,6 +656,8 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	
 	[self updateViewForPlayerInfo:player];
 	[self updateViewForPlayerState:player];
+
+    [self.songTableView reloadData];
 }
 
 - (void)volumeSliderMoved:(UISlider *)sender
