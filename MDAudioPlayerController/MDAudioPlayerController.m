@@ -349,7 +349,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 - (void)showSongFiles
 {
 	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:5];
+	[UIView setAnimationDuration:.5];
 	
 	[UIView setAnimationTransition:([self.songTableView superview] ?
 									UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight)
@@ -362,7 +362,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	[UIView commitAnimations];
 	
 	[UIView beginAnimations:nil context:NULL];
-	[UIView setAnimationDuration:5];
+	[UIView setAnimationDuration:.5];
 	
 	[UIView setAnimationTransition:([self.songTableView superview] ?
 									UIViewAnimationTransitionFlipFromLeft : UIViewAnimationTransitionFlipFromRight)
