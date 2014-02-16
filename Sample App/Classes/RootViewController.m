@@ -131,7 +131,7 @@
 	}
 	
 	MDAudioPlayerController *audioPlayer = [[MDAudioPlayerController alloc] initWithSoundFiles:songs atPath:[[NSBundle mainBundle] bundlePath] andSelectedIndex:indexPath.row];
-	[self.navigationController presentViewController:audioPlayer animated:YES completion:nil];
+	[self presentViewController:audioPlayer animated:YES completion:nil];
 }
 
 

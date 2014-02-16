@@ -172,9 +172,12 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	self.view.backgroundColor = [UIColor blackColor];
 	
 	if (!IS_OS_7_OR_LATER) [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleBlackOpaque animated:YES];
-    else [self setNeedsStatusBarAppearanceUpdate];
 	
 	updateTimer = nil;
+    
+    UIView *statusBarBackground = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 320, statusBarOffset)];
+    statusBarBackground.backgroundColor = [UIColor colorWithRed:0.078f green:0.078f blue:0.078f alpha:1.00f];
+    [self.view addSubview:statusBarBackground];
 	
 	UINavigationBar *navigationBar = [[UINavigationBar alloc] initWithFrame:CGRectMake(0, statusBarOffset, self.view.frame.size.width, 44)];
 	navigationBar.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleWidth;
@@ -343,6 +346,7 @@ void interruptionListenerCallback (void *userData, UInt32 interruptionState)
 	
 	[self updateViewForPlayerInfo:player];
 	[self updateViewForPlayerState:player];
+    
 }
 
 - (void)dismissAudioPlayer
