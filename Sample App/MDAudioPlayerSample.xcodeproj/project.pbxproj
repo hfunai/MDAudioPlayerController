@@ -41,6 +41,7 @@
 		C99ACCD71208AE54004ED7EE /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99ACCD61208AE54004ED7EE /* AVFoundation.framework */; };
 		C99ACD531208AE80004ED7EE /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99ACD521208AE80004ED7EE /* QuartzCore.framework */; };
 		C99ACD6D1208AE8C004ED7EE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C99ACD6C1208AE8C004ED7EE /* CoreGraphics.framework */; };
+		E100528918AFBA3A00BAF91C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = E100528818AFBA3A00BAF91C /* Default-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -86,6 +87,7 @@
 		C99ACCD61208AE54004ED7EE /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		C99ACD521208AE80004ED7EE /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		C99ACD6C1208AE8C004ED7EE /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		E100528818AFBA3A00BAF91C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -188,6 +190,7 @@
 		29B97317FDCFA39411CA2CEA /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				E100528818AFBA3A00BAF91C /* Default-568h@2x.png */,
 				C99ACC5B1208ADC9004ED7EE /* 1.mp3 */,
 				C99ACC5C1208ADC9004ED7EE /* 2.mp3 */,
 				C99ACC5D1208ADC9004ED7EE /* 3.mp3 */,
@@ -236,6 +239,8 @@
 /* Begin PBXProject section */
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
+			attributes = {
+			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "MDAudioPlayerSample" */;
 			compatibilityVersion = "Xcode 3.1";
 			developmentRegion = English;
@@ -278,6 +283,7 @@
 				1B38C8AA17EB00E8009B8DD8 /* AudioPlayerRepeatOneOn.png in Resources */,
 				1B38C8AB17EB00E8009B8DD8 /* AudioPlayerScrubberKnob.png in Resources */,
 				1B38C8AC17EB00E8009B8DD8 /* AudioPlayerScrubberLeft.png in Resources */,
+				E100528918AFBA3A00BAF91C /* Default-568h@2x.png in Resources */,
 				1B38C8AD17EB00E8009B8DD8 /* AudioPlayerScrubberRight.png in Resources */,
 				1B38C8AE17EB00E8009B8DD8 /* AudioPlayerShuffleOff.png in Resources */,
 				1B38C8AF17EB00E8009B8DD8 /* AudioPlayerShuffleOn.png in Resources */,

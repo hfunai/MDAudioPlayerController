@@ -11,6 +11,9 @@
 #import <QuartzCore/QuartzCore.h>
 #import "MDAudioFile.h"
 
+#define FOUR_INCH_SCREEN  ([[UIScreen mainScreen] bounds].size.height == 568)
+#define IS_OS_7_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
+
 @protocol MDAudioPlayerControllerDelegate;
 
 @interface MDAudioPlayerController : UIViewController <AVAudioPlayerDelegate, UITableViewDelegate, UITableViewDataSource>
@@ -54,40 +57,40 @@
 	BOOL				shuffle;
 }
 
-@property (nonatomic,assign) id <MDAudioPlayerControllerDelegate> delegate;
-@property (nonatomic, retain) NSMutableArray *soundFiles;
-@property (nonatomic, copy) NSString *soundFilesPath;
+@property (nonatomic, weak)  id <MDAudioPlayerControllerDelegate> delegate;
+@property (nonatomic, strong) NSMutableArray *soundFiles;
+@property (nonatomic, strong) NSString *soundFilesPath;
 
-@property (nonatomic, retain) AVAudioPlayer *player;
+@property (nonatomic, strong) AVAudioPlayer *player;
 
-@property (nonatomic, retain) CAGradientLayer *gradientLayer;
+@property (nonatomic, strong) CAGradientLayer *gradientLayer;
 
-@property (nonatomic, retain) UIButton *playButton;
-@property (nonatomic, retain) UIButton *pauseButton;
-@property (nonatomic, retain) UIButton *nextButton;
-@property (nonatomic, retain) UIButton *previousButton;
-@property (nonatomic, retain) UIButton *toggleButton;
-@property (nonatomic, retain) UIButton *repeatButton;
-@property (nonatomic, retain) UIButton *shuffleButton;
+@property (nonatomic, strong) UIButton *playButton;
+@property (nonatomic, strong) UIButton *pauseButton;
+@property (nonatomic, strong) UIButton *nextButton;
+@property (nonatomic, strong) UIButton *previousButton;
+@property (nonatomic, strong) UIButton *toggleButton;
+@property (nonatomic, strong) UIButton *repeatButton;
+@property (nonatomic, strong) UIButton *shuffleButton;
 
-@property (nonatomic, retain) UILabel *currentTime;
-@property (nonatomic, retain) UILabel *duration;
-@property (nonatomic, retain) UILabel *indexLabel;;
-@property (nonatomic, retain) UILabel *titleLabel;
-@property (nonatomic, retain) UILabel *artistLabel;
-@property (nonatomic, retain) UILabel *albumLabel;
+@property (nonatomic, strong) UILabel *currentTime;
+@property (nonatomic, strong) UILabel *duration;
+@property (nonatomic, strong) UILabel *indexLabel;;
+@property (nonatomic, strong) UILabel *titleLabel;
+@property (nonatomic, strong) UILabel *artistLabel;
+@property (nonatomic, strong) UILabel *albumLabel;
 
-@property (nonatomic, retain) UISlider *volumeSlider;
-@property (nonatomic, retain) UISlider *progressSlider;
+@property (nonatomic, strong) UISlider *volumeSlider;
+@property (nonatomic, strong) UISlider *progressSlider;
 
-@property (nonatomic, retain) UITableView *songTableView;
+@property (nonatomic, strong) UITableView *songTableView;
 
-@property (nonatomic, retain) UIButton *artworkView;
-@property (nonatomic, retain) UIImageView *reflectionView;
-@property (nonatomic, retain) UIView *containerView;
-@property (nonatomic, retain) UIView *overlayView;
+@property (nonatomic, strong) UIButton *artworkView;
+@property (nonatomic, strong) UIImageView *reflectionView;
+@property (nonatomic, strong) UIView *containerView;
+@property (nonatomic, strong) UIView *overlayView;
 
-@property (nonatomic, retain) NSTimer *updateTimer;
+@property (nonatomic, strong) NSTimer *updateTimer;
 
 @property (nonatomic, assign) BOOL interrupted;
 @property (nonatomic, assign) BOOL repeatAll;
