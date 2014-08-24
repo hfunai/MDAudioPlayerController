@@ -21,9 +21,9 @@
 	BOOL				isSelectedIndex;
 }
 
-@property (nonatomic, strong) NSString *title;
-@property (nonatomic, strong) NSString *number;
-@property (nonatomic, strong) NSString *duration;
+@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy) NSString *number;
+@property (nonatomic, copy) NSString *duration;
 
 @property (nonatomic, assign) BOOL isEven;
 @property (nonatomic, assign) BOOL isSelectedIndex;

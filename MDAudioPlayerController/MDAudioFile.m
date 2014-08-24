@@ -16,10 +16,23 @@
 
 - (MDAudioFile *)initWithPath:(NSURL *)path
 {
-	if (self = [super init]) 
+	if (self = [super init])
 	{
 		self.filePath = path;
 		self.fileInfoDict = [self songID3Tags];
+        self.coverImage = [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerNoArtwork" ofType:@"png"]];
+	}
+	
+	return self;
+}
+
+- (MDAudioFile *)initWithPath:(NSURL *)path withCoverImage:(UIImage *)coverImage
+{
+	if (self = [super init])
+	{
+		self.filePath = path;
+		self.fileInfoDict = [self songID3Tags];
+        self.coverImage = coverImage;
 	}
 	
 	return self;
@@ -29,7 +42,6 @@
 {	
 	AudioFileID fileID = nil;
 	OSStatus error = noErr;
-	
 	error = AudioFileOpenURL((__bridge CFURLRef)self.filePath, kAudioFileReadPermission, 0, &fileID);
 	if (error != noErr) {
         NSLog(@"AudioFileOpenURL failed");
@@ -96,17 +108,7 @@
 
 - (NSString *)title
 {
-	if ([fileInfoDict objectForKey:[NSString stringWithUTF8String:kAFInfoDictionary_Title]]) {
-		return [fileInfoDict objectForKey:[NSString stringWithUTF8String:kAFInfoDictionary_Title]];
-	}
-	
-	else {
-		NSString *url = [filePath absoluteString];
-		NSArray *parts = [url componentsSeparatedByString:@"/"];
-		return [parts objectAtIndex:[parts count]-1];
-	}
-	
-	return nil;
+    return _inputTitle;
 }
 
 - (NSString *)artist
@@ -136,11 +138,6 @@
 - (NSString *)durationInMinutes
 {	
 	return [NSString stringWithFormat:@"%d:%02d", (int)[self duration] / 60, (int)[self duration] % 60, nil];
-}
-
-- (UIImage *)coverImage
-{
-	return [UIImage imageWithContentsOfFile:[[NSBundle mainBundle] pathForResource:@"AudioPlayerNoArtwork" ofType:@"png"]];
 }
 
 @end

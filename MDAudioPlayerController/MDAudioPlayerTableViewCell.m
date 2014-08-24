@@ -7,7 +7,6 @@
 //
 
 #import "MDAudioPlayerTableViewCell.h"
-#define IS_OS_7_OR_LATER    ([[[UIDevice currentDevice] systemVersion] floatValue] >= 7.0)
 
 
 @interface MDTableViewCellView : UIView
@@ -17,12 +16,7 @@
 
 - (void)drawRect:(CGRect)r
 {
-    if (IS_OS_7_OR_LATER) {
-        [(MDAudioPlayerTableViewCell *)[self superview].superview drawContentView:r];
-    }
-    else {
-        [(MDAudioPlayerTableViewCell *)[self superview] drawContentView:r];
-    }
+	[(MDAudioPlayerTableViewCell *)[self superview] drawContentView:r];
 }
 
 @end
@@ -101,9 +95,9 @@ static UIFont *textFont = nil;
 	UIColor *bgColor;
 	
 	if (self.highlighted)
-		bgColor = [UIColor blackColor];
+		bgColor = [UIColor clearColor];
 	else
-		bgColor = self.isEven ? [UIColor colorWithWhite:0.0 alpha:0.95] : [UIColor blackColor];
+		bgColor = self.isEven ? [UIColor colorWithWhite:0.0 alpha:0.25] : [UIColor clearColor];
 	
 	UIColor *textColor = [UIColor whiteColor];
 	UIColor *dividerColor = self.highlighted ? [UIColor clearColor] : [UIColor colorWithRed:0.986 green:0.933 blue:0.994 alpha:0.13];

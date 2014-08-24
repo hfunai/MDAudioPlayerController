@@ -18,14 +18,16 @@
 
 @property (nonatomic, retain) NSURL *filePath;
 @property (nonatomic, retain) NSDictionary *fileInfoDict;
+@property (nonatomic, retain) UIImage *coverImage;
+@property (nonatomic, retain) NSString *inputTitle;
 
 - (MDAudioFile *)initWithPath:(NSURL *)path;
+- (MDAudioFile *)initWithPath:(NSURL *)path withCoverImage:(UIImage *)coverImage;
 - (NSDictionary *)songID3Tags;
 - (NSString *)title;
 - (NSString *)artist;
 - (NSString *)album;
 - (float)duration;
 - (NSString *)durationInMinutes;
-- (UIImage *)coverImage;
 
 @end
